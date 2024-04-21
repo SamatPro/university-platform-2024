@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.kpfu.itis.universityplatform.entity.User;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +18,7 @@ public class UserPrincipal implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
 
@@ -29,6 +28,7 @@ public class UserPrincipal implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
+                user.getEmail(),
                 authorities
         );
     }

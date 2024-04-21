@@ -1,9 +1,12 @@
 package ru.kpfu.itis.universityplatform.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -24,9 +27,16 @@ public class User {
     private UserRole role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Profile profile;
 
     @OneToMany(mappedBy = "postedBy")
     private List<Job> jobs;
+
+    @OneToMany(mappedBy = "userFrom")
+    private Set<GraphConnection> connectionsFrom;
+
+    @OneToMany(mappedBy = "userTo")
+    private Set<GraphConnection> connectionsTo;
 
 }

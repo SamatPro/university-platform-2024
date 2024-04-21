@@ -6,7 +6,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="classpath:/db/changelog/changelog-01-initial-schema.xml"/>
-    <include file="classpath:/db/changelog/changelog-02-group-chat.xml"/>
+    <include file="classpath:/db/changelog/changelog-01.xml"/>
+    <include file="classpath:/db/changelog/changelog-02.xml"/>
+    <include file="classpath:/db/changelog/changelog-03.xml"/>
 
 </databaseChangeLog>

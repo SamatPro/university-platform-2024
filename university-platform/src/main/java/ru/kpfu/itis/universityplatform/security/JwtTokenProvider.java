@@ -16,19 +16,30 @@ public class JwtTokenProvider {
     private final long JWT_EXPIRATION = 604800000L;
 
     public String generateToken(Authentication authentication) {
-        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
+        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION); // Лучше определить JWT_EXPIRATION как static final long
 
         return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
-                .setIssuedAt(new Date())
+                .setSubject(userPrincipal.getEmail()) // Идентификатор пользователя
+                .claim("userId", userPrincipal.getId())   // Добавляем userId как дополнительный claim
+                .claim("username", userPrincipal.getUsername())   // Добавляем userId как дополнительный claim
+                .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
 
     public String getUsernameFromJWT(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(JWT_SECRET)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("email").toString();
+    }
+
+    public String getEmailFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(token)

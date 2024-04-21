@@ -21,25 +21,12 @@
         <!-- Создание таблицы для связи пользователей и чатов -->
         <createTable tableName="chat_group_members" schemaName="data">
             <column name="chat_group_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_chat_group_id"/>
+                <constraints nullable="false" foreignKeyName="fk_chat_group_id" references="chat_group(id)"/>
             </column>
             <column name="user_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_user_id"/>
+                <constraints nullable="false" foreignKeyName="fk_user_id" references="users(id)"/>
             </column>
         </createTable>
-
-        <!-- Добавление внешних ключей -->
-        <addForeignKeyConstraint constraintName="fk_chat_group_id"
-                                 baseTableName="chat_group_members"
-                                 baseColumnNames="chat_group_id"
-                                 referencedTableName="chat_group"
-                                 referencedColumnNames="id"/>
-
-        <addForeignKeyConstraint constraintName="fk_user_id"
-                                 baseTableName="chat_group_members"
-                                 baseColumnNames="user_id"
-                                 referencedTableName="users"
-                                 referencedColumnNames="id"/>
     </changeSet>
 
 </databaseChangeLog>

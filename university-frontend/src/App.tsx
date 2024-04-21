@@ -1,32 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-
-interface User {
-  username: string;  // предположим, что у пользователя есть только имя
-}
+// src/App.tsx
+import React from 'react';
+import {BrowserRouter as Router, Routes, Route, Navigate, useLocation} from 'react-router-dom';
+import HomePage from './components/HomePage';
+import UserProfilePage from './components/UserProfilePage';
+import NetworkPage from './components/NetworkPage';
+import JobsPage from './components/JobsPage';
+import Login from "./components/login";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    fetch('http://localhost:8080/users')
-        .then(response => response.json())
-        .then(data => setUsers(data))
-        .catch(error => console.error('Error:', error));
-  }, []);
-
-  return (
-      <div className="App">
-        <header className="App-header">
-          <h1>University Platform Users</h1>
-          <ul>
-            {users.map((user, index) => (
-                <li key={index}>{user.username}</li>
-            ))}
-          </ul>
-        </header>
-      </div>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile/:username" element={<UserProfilePage />} />
+                <Route path="/network" element={<NetworkPage />} />
+                <Route path="/jobs" element={<JobsPage />} />
+                <Route path="*" element={<Navigate replace to="/login" />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

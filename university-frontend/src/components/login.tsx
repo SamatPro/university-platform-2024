@@ -1,15 +1,28 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+// Login.tsx
+import React, { useState } from 'react';
+import { useLoginMutation } from '../services/authApi';
+import {useNavigate} from "react-router-dom";
+import decodeToken from "../services/decodeToken";
 
 export default function Login() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [login, { isLoading, isError }] = useLoginMutation();
 
     const handleLogin = async () => {
         try {
-            const {data} = await axios.post('/api/auth/login', {username, password});
-            localStorage.setItem('token', data.token);
+            const response = await login({ username, password }).unwrap();
+            localStorage.setItem('token', response.token);
             console.log('Logged in successfully');
+            const decoded = decodeToken(response.token)
+            if (decoded && decoded.username) {
+                navigate(`/profile/${decoded.username}`);
+            } else {
+                console.error('Username is missing in the token');
+                // Обработайте случай отсутствия username
+            }
         } catch (error) {
             console.error('Failed to login', error);
         }
@@ -27,7 +40,10 @@ export default function Login() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />
-            <button onClick={handleLogin}>Login</button>
+            <button onClick={handleLogin} disabled={isLoading}>
+                {isLoading ? 'Logging in...' : 'Login'}
+            </button>
+            {isError && <p>Error logging in. Please try again.</p>}
         </div>
     );
 }

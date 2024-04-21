@@ -27,5 +27,4 @@ public class Job {
     @JoinColumn(name = "posted_by")
     private User postedBy;
 
-    // getters and setters
 }
