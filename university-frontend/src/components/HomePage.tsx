@@ -1,18 +1,18 @@
-// src/components/HomePage.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
+import styles from './HomePage.module.css';
 
 const HomePage: React.FC = () => {
     return (
-        <div>
-            <h1>Welcome to the University Platform</h1>
-            <nav>
-                <ul>
-                    <li><Link to="/profile/1">My Profile</Link></li>
-                    <li><Link to="/network">Network</Link></li>
-                    <li><Link to="/jobs">Jobs</Link></li>
-                </ul>
-            </nav>
+        <div className={styles.homePage}>
+            <Header />
+            <main className={styles.mainContent}>
+
+                <h1>Welcome to the University Network</h1>
+
+            </main>
+            <Footer />
         </div>
     );
 }

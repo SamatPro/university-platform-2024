@@ -1,5 +1,5 @@
 // services/authApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 interface LoginResponse {
     token: string;
@@ -11,17 +11,22 @@ interface LoginRequest {
 }
 
 export const authApi = createApi({
-    reducerPath: 'apiService',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/' }),
+    reducerPath: 'authApi',
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:8080/api/'}),
+    tagTypes: ['User', 'Profile'],
     endpoints: (builder) => ({
-        login: builder.mutation<LoginResponse, { username: string; password: string }>({
-            query: (credentials) => ({
-                url: 'auth/login',
-                method: 'POST',
-                body: credentials,
-            }),
+        login: builder.mutation<LoginResponse, LoginRequest>({
+            query: (credentials) => {
+                console.log('Logging in with:', credentials);
+                return {
+                    url: 'auth/login',
+                    method: 'POST',
+                    body: credentials,
+                }
+            },
+            invalidatesTags: ['User', 'Profile'],
         }),
     }),
 });
 
-export const { useLoginMutation } = authApi;
+export const {useLoginMutation} = authApi;

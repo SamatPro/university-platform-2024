@@ -1,0 +1,18 @@
+.homePage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.mainContent {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+
+h1 {
+    color: #283e4a;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}

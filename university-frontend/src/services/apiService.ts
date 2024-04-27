@@ -31,7 +31,7 @@ interface Job {
 
 export const apiService = createApi({
     reducerPath: 'apiService',
-    tagTypes: ['Profile'], // Указываем, какие типы тегов мы используем
+    tagTypes: ['Profile', 'User', 'Job'], // Указываем, какие типы тегов мы используем
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:8080/api/',
         prepareHeaders: (headers, { getState }) => {

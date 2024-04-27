@@ -63,8 +63,8 @@ public class AntColonyOptimization {
 
         for (int i = 0; i < numUsers; i++) {
             if (!visited[i]) {
-                double pheromone = Math.pow(pheromones[current][i], 1.0); // alpha parameter
-                double heuristic = Math.pow(1.0 / graph[current][i], 2.0); // beta parameter
+                double pheromone = Math.pow(pheromones[current][i], 1.0);
+                double heuristic = Math.pow(1.0 / graph[current][i], 2.0);
                 probabilities[i] = pheromone * heuristic;
                 sum += probabilities[i];
             } else {
@@ -91,7 +91,7 @@ public class AntColonyOptimization {
             }
         }
 
-        return numUsers - 1; // return last index if not selected by random chance
+        return numUsers - 1; 
     }
 
 

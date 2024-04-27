@@ -5,7 +5,9 @@ import HomePage from './components/HomePage';
 import UserProfilePage from './components/UserProfilePage';
 import NetworkPage from './components/NetworkPage';
 import JobsPage from './components/JobsPage';
-import Login from "./components/login";
+import Login from './components/Login';
+import {SearchComponent} from "./components/SearchComponent";
+import Chat from "./components/Chat";
 
 function App() {
     return (
@@ -16,6 +18,8 @@ function App() {
                 <Route path="/profile/:username" element={<UserProfilePage />} />
                 <Route path="/network" element={<NetworkPage />} />
                 <Route path="/jobs" element={<JobsPage />} />
+                <Route path="/search" element={<SearchComponent />} />
+                <Route path="/chat" element={<Chat />} />
                 <Route path="*" element={<Navigate replace to="/login" />} />
             </Routes>
         </Router>

@@ -5,7 +5,7 @@ interface DecodedToken {
     userId: number;
     exp: number;  // Срок действия токена
     iat: number;  // Время выпуска токена
-    username?: string;
+    username: string;
     // Добавьте другие поля, которые вы сохраняете в токене
 }
 
