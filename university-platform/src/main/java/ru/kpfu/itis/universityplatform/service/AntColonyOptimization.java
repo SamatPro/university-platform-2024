@@ -91,7 +91,7 @@ public class AntColonyOptimization {
             }
         }
 
-        return numUsers - 1; 
+        return numUsers - 1;
     }
 
 

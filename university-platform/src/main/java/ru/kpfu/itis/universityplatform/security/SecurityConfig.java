@@ -27,8 +27,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .cors().configurationSource(corsConfigurationSource)
-//                .and()
+                .cors().configurationSource(corsConfigurationSource)
+                .and()
                 .csrf().disable() // Отключаем CSRF защиту
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**", "/ws/**").permitAll() // Путь для аутентификации открыт для всех
                 .antMatchers("/api/sync-users/**").hasRole("ADMIN") // Только ADMIN может синхронизировать пользователей
-                .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
+                .anyRequest().permitAll() // Все остальные запросы требуют аутентификации
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // JWT фильтр перед базовой аутентификацией
                 .httpBasic(); // Основная HTTP аутентификация

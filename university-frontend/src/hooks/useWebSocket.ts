@@ -1,24 +1,20 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
 export const useWebSocket = (endpoint: string, getToken: () => string | null) => {
     const [stompClient, setStompClient] = useState<Client | null>(null);
-    const [isConnected, setIsConnected] = useState(false);
+    const [isConnected, setIsConnected] = useState<boolean>(false);
 
     useEffect(() => {
-        // const socket = new SockJS(endpoint);
         const client = new Client({
             webSocketFactory: () => new SockJS(endpoint),
             reconnectDelay: 5000,
             connectHeaders: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${getToken()}`,
             },
             onConnect: () => {
                 setIsConnected(true);
-                client.subscribe('/topic/messages', (message) => {
-                    // Handle message reception here
-                });
             },
             onStompError: (error) => {
                 setIsConnected(false);
@@ -36,6 +32,7 @@ export const useWebSocket = (endpoint: string, getToken: () => string | null) =>
         });
 
         client.activate();
+        setStompClient(client);
 
         return () => {
             client.deactivate();

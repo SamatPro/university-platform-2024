@@ -5,27 +5,31 @@ import Footer from './Footer';
 import styles from './HomePage.module.css';
 
 const Chat: React.FC = () => {
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState<string>('');
     const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
     const { stompClient, isConnected } = useWebSocket('http://localhost:8080/ws', () => localStorage.getItem('token'));
 
     useEffect(() => {
         if (stompClient) {
-            stompClient.onConnect = (frame) => {
+            stompClient.onConnect = () => {
                 console.log("STOMP connection established.");
-                stompClient.subscribe('/topic/messages', (message) => {
-                    setReceivedMessages(prevMessages => [...prevMessages, message.body]);
+                stompClient.subscribe('/topic/messages', (msg) => {
+                    setReceivedMessages(prevMessages => [...prevMessages, msg.body]);
                 });
             };
         }
     }, [stompClient]);
 
     const sendMessage = () => {
-        if (stompClient && stompClient.connected && message) {
+        if (stompClient && isConnected && message) {
             try {
                 stompClient.publish({
                     destination: '/app/chat',
-                    body: message
+                    body: JSON.stringify({
+                        content: message,
+                        sender: { id: 1 }, // Hardcoded sender ID, replace with dynamic user data
+                        receiver: { id: 2 } // Hardcoded receiver ID, replace with dynamic user data
+                    })
                 });
                 setMessage(''); // Clear only on successful send
             } catch (error) {
@@ -38,9 +42,8 @@ const Chat: React.FC = () => {
 
     return (
         <div className={styles.homePage}>
-            <Header/>
+            <Header />
             <main className={styles.mainContent}>
-
                 <div>
                     <ul>
                         {receivedMessages.map((msg, index) => (
@@ -55,9 +58,8 @@ const Chat: React.FC = () => {
                     />
                     <button onClick={sendMessage}>Send</button>
                 </div>
-
             </main>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
