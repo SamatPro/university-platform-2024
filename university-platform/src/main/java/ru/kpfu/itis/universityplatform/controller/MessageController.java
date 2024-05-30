@@ -14,13 +14,13 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @GetMapping
-    public List<Message> getAllMessages() {
-        return messageService.findAllMessages();
+    @GetMapping("/{userId}")
+    public List<Message> getMessagesByUser(@PathVariable Long userId) {
+        return messageService.findMessagesByUser(userId);
     }
 
     @PostMapping
-    public Message createMessage(@RequestBody Message message) {
-        return messageService.saveMessage(message);
+    public Message createMessage(@RequestParam Long senderId, @RequestParam Long receiverId, @RequestBody String content) {
+        return messageService.saveMessage(senderId, receiverId, content);
     }
 }

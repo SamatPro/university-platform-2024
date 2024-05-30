@@ -1,0 +1,26 @@
+.container {
+    padding: 20px;
+}
+
+.notificationList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notificationItem {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}

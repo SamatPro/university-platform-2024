@@ -21,7 +21,6 @@ public class WebSocketController {
     @SendTo("/topic/messages")
     public Message handleMessage(Message message) {
         message.setTimestamp(LocalDateTime.now());
-        return messageService.saveMessage(message);
+        return messageService.saveMessageEntity(message);
     }
 }
-

@@ -22,6 +22,8 @@ const Login: React.FC = () => {
             console.log('Logged in successfully');
             const decoded = decodeToken(response.token)
             if (decoded && decoded.username) {
+                localStorage.setItem('username', decoded.username);
+                localStorage.setItem('currentUserId', String(decoded.userId));
                 navigate(`/profile/${decoded.username}`);
             } else {
                 console.error('Username is missing in the token');

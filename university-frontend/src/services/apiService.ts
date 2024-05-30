@@ -1,4 +1,3 @@
-// src/services/apiService.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface Profile {
@@ -8,9 +7,12 @@ interface Profile {
     university: string;
     graduationYear: number;
     bio: string;
+    skills: string[];
+    avatarFilename?: string;
     user: {
         id: number;
         username: string;
+        avatarFilename?: string;
     };
 }
 
@@ -18,7 +20,7 @@ interface User {
     id: number;
     username: string;
     email: string;
-
+    profile: Profile;
 }
 
 interface Job {
@@ -29,14 +31,28 @@ interface Job {
     // Другие свойства
 }
 
+interface Message {
+    id: number;
+    sender: User;
+    receiver: User;
+    content: string;
+    timestamp: string;
+}
+
+interface Notification {
+    id: number;
+    message: string;
+    createdAt: string;
+    read: boolean;
+}
+
 export const apiService = createApi({
     reducerPath: 'apiService',
-    tagTypes: ['Profile', 'User', 'Job'], // Указываем, какие типы тегов мы используем
+    tagTypes: ['Profile', 'User', 'Job', 'Message', 'Notification'],
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:8080/api/',
-        prepareHeaders: (headers, { getState }) => {
+        prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
-            console.log("Token for API:", token);
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
@@ -62,13 +78,56 @@ export const apiService = createApi({
                 body: profile,
             }),
         }),
+        uploadAvatar: builder.mutation<void, { username: string; file: FormData }>({
+            query: ({ username, file }) => ({
+                url: `users/${username}/avatar`,
+                method: 'POST',
+                body: file,
+            }),
+            invalidatesTags: [{ type: 'Profile', id: 'LIST' }]
+        }),
         getUsers: builder.query<User[], void>({
             query: () => 'users',
         }),
         getJobs: builder.query<Job[], void>({
             query: () => 'jobs',
         }),
+        getMessages: builder.query<Message[], number>({
+            query: (userId) => `messages/${userId}`,
+        }),
+        sendMessage: builder.mutation<Message, { senderId: number; receiverId: number; content: string }>({
+            query: ({ senderId, receiverId, content }) => ({
+                url: 'messages',
+                method: 'POST',
+                body: { senderId, receiverId, content },
+            }),
+        }),
+        getRecommendations: builder.query<Profile[], number>({
+            query: (userId) => `recommendations/${userId}`,
+        }),
+        getNotifications: builder.query<Notification[], void>({
+            query: () => 'notifications',
+        }),
+        markNotificationAsRead: builder.mutation<void, number>({
+            query: (notificationId) => ({
+                url: `notifications/${notificationId}/read`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
+        }),
     }),
 });
 
-export const { useGetUsersQuery, useGetProfileByUsernameQuery, useCreateProfileMutation, useUpdateProfileMutation, useGetJobsQuery } = apiService;
+export const {
+    useGetMessagesQuery,
+    useSendMessageMutation,
+    useGetUsersQuery,
+    useGetProfileByUsernameQuery,
+    useCreateProfileMutation,
+    useUpdateProfileMutation,
+    useUploadAvatarMutation,
+    useGetJobsQuery,
+    useGetRecommendationsQuery,
+    useGetNotificationsQuery,
+    useMarkNotificationAsReadMutation
+} = apiService;

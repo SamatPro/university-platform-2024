@@ -1,8 +1,8 @@
 package ru.kpfu.itis.universityplatform.entity;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
@@ -27,16 +27,24 @@ public class User {
     private UserRole role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonBackReference
     private Profile profile;
 
     @OneToMany(mappedBy = "postedBy")
     private List<Job> jobs;
 
     @OneToMany(mappedBy = "userFrom")
+    @JsonIgnore
     private Set<GraphConnection> connectionsFrom;
 
     @OneToMany(mappedBy = "userTo")
+    @JsonIgnore
     private Set<GraphConnection> connectionsTo;
 
+    @OneToMany(mappedBy = "sender")
+    @JsonBackReference
+    private List<Message> sentMessages;
+
+    @OneToMany(mappedBy = "receiver")
+    @JsonBackReference
+    private List<Message> receivedMessages;
 }

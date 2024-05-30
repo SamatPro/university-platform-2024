@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**", "/ws/**").permitAll() // Путь для аутентификации открыт для всех
                 .antMatchers("/api/sync-users/**").hasRole("ADMIN") // Только ADMIN может синхронизировать пользователей
-                .anyRequest().permitAll() // Все остальные запросы требуют аутентификации
+                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // JWT фильтр перед базовой аутентификацией
                 .httpBasic(); // Основная HTTP аутентификация

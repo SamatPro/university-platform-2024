@@ -1,7 +1,6 @@
 package ru.kpfu.itis.universityplatform.service;
 
 import lombok.Data;
-
 import java.util.Arrays;
 
 @Data
@@ -35,6 +34,10 @@ public class AntColonyOptimization {
     }
 
     int[] simulateAnt(int startUser) {
+        if (numUsers == 0 || graph.length == 0) {
+            return new int[0];
+        }
+
         int[] tour = new int[numUsers];
         boolean[] visited = new boolean[numUsers];
         Arrays.fill(visited, false);
@@ -64,7 +67,7 @@ public class AntColonyOptimization {
         for (int i = 0; i < numUsers; i++) {
             if (!visited[i]) {
                 double pheromone = Math.pow(pheromones[current][i], 1.0);
-                double heuristic = Math.pow(1.0 / graph[current][i], 2.0);
+                double heuristic = graph[current][i] != 0 ? Math.pow(1.0 / graph[current][i], 2.0) : 0;
                 probabilities[i] = pheromone * heuristic;
                 sum += probabilities[i];
             } else {
@@ -93,7 +96,6 @@ public class AntColonyOptimization {
 
         return numUsers - 1;
     }
-
 
     private void updatePheromones(int[] tour) {
         for (int i = 0; i < tour.length - 1; i++) {

@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.universityplatform.entity.Profile;
-import ru.kpfu.itis.universityplatform.entity.User;
 import ru.kpfu.itis.universityplatform.service.ProfileService;
-import ru.kpfu.itis.universityplatform.service.UserService;
 
 @RestController
 @RequestMapping("/api/profiles")

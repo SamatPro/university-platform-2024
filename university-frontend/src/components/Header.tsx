@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import './Header.css';
+import styles from './Header.module.css';
 import {useGetProfileByUsernameQuery, useUpdateProfileMutation} from "../services/apiService";
 import decodeToken from "../services/decodeToken";
 

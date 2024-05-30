@@ -33,6 +33,7 @@ public class ProfileService {
                     profile.setUniversity(profileDetails.getUniversity());
                     profile.setGraduationYear(profileDetails.getGraduationYear());
                     profile.setBio(profileDetails.getBio());
+                    profile.setSkills(profileDetails.getSkills());
                     return profileRepository.save(profile);
                 });
     }

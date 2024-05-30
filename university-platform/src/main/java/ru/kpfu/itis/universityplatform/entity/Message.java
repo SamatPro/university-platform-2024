@@ -1,8 +1,8 @@
 package ru.kpfu.itis.universityplatform.entity;
 
-import javax.persistence.*;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,11 +14,11 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
     @Column(nullable = false)
@@ -27,5 +27,5 @@ public class Message {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    // getters and setters
+    // Getters and Setters
 }

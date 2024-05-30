@@ -1,13 +1,18 @@
 package ru.kpfu.itis.universityplatform.entity;
 
 import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import java.util.Set;
 
 @Entity
 @Table(name = "profiles")
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +33,15 @@ public class Profile {
     @Column
     private String bio;
 
+    @Column
+    private String avatarFilename;
+
+    @ElementCollection
+    @CollectionTable(name = "profile_skills", joinColumns = @JoinColumn(name = "profile_id"))
+    @Column(name = "skill")
+    private Set<String> skills;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonManagedReference
     private User user;
-
-    // getters and setters
 }

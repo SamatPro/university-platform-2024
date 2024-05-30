@@ -1,65 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { useWebSocket } from '../hooks/useWebSocket';
-import Header from './Header';
-import Footer from './Footer';
-import styles from './HomePage.module.css';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { useGetMessagesQuery, useSendMessageMutation } from '../services/apiService';
+import styles from './Chat.module.css';
 
 const Chat: React.FC = () => {
-    const [message, setMessage] = useState<string>('');
-    const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
-    const { stompClient, isConnected } = useWebSocket('http://localhost:8080/ws', () => localStorage.getItem('token'));
+    const { userId } = useParams<{ userId: string }>();
+    const currentUserId = localStorage.getItem('currentUser'); // Assuming you store current user's ID in localStorage
+    const { data: messages, refetch } = useGetMessagesQuery(Number(userId));
+    const [sendMessage] = useSendMessageMutation();
+    const [newMessage, setNewMessage] = useState('');
+    const clientRef = useRef<Client | null>(null);
 
     useEffect(() => {
-        if (stompClient) {
-            stompClient.onConnect = () => {
-                console.log("STOMP connection established.");
-                stompClient.subscribe('/topic/messages', (msg) => {
-                    setReceivedMessages(prevMessages => [...prevMessages, msg.body]);
+        const client = new Client({
+            brokerURL: 'ws://localhost:8080/ws',
+            webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+            onConnect: () => {
+                console.log('Connected');
+                client.subscribe(`/user/${currentUserId}/queue/messages`, (message) => {
+                    if (message.body) {
+                        refetch();
+                    }
                 });
-            };
-        }
-    }, [stompClient]);
+            },
+        });
+        client.activate();
+        clientRef.current = client;
 
-    const sendMessage = () => {
-        if (stompClient && isConnected && message) {
-            try {
-                stompClient.publish({
-                    destination: '/app/chat',
-                    body: JSON.stringify({
-                        content: message,
-                        sender: { id: 1 }, // Hardcoded sender ID, replace with dynamic user data
-                        receiver: { id: 2 } // Hardcoded receiver ID, replace with dynamic user data
-                    })
-                });
-                setMessage(''); // Clear only on successful send
-            } catch (error) {
-                console.error("Error sending message:", error);
+        return () => {
+            if (clientRef.current) {
+                clientRef.current.deactivate();
             }
-        } else {
-            console.error("STOMP client is not connected.");
+        };
+    }, [refetch, currentUserId]);
+
+    const handleSendMessage = () => {
+        if (clientRef.current && newMessage.trim() !== '') {
+            const message = {
+                senderId: Number(currentUserId),
+                receiverId: Number(userId),
+                content: newMessage,
+                timestamp: new Date().toISOString()
+            };
+            clientRef.current.publish({ destination: '/app/chat', body: JSON.stringify(message) });
+            setNewMessage('');
         }
     };
 
     return (
-        <div className={styles.homePage}>
-            <Header />
-            <main className={styles.mainContent}>
-                <div>
-                    <ul>
-                        {receivedMessages.map((msg, index) => (
-                            <li key={index}>{msg}</li>
-                        ))}
-                    </ul>
-                    <input
-                        type="text"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                    />
-                    <button onClick={sendMessage}>Send</button>
-                </div>
-            </main>
-            <Footer />
+        <div className={styles.chat}>
+            <div className={styles.messages}>
+                {messages?.map((message, index) => (
+                    <div key={index} className={styles.message}>
+                        <strong>{message.sender.username}:</strong> {message.content}
+                    </div>
+                ))}
+            </div>
+            <div className={styles.inputArea}>
+                <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your message..."
+                />
+                <button onClick={handleSendMessage}>Send</button>
+            </div>
         </div>
     );
 };
