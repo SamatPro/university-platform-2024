@@ -5,13 +5,15 @@ import Chat from './Chat';
 import Header from './Header';
 import Footer from './Footer';
 import styles from './ChatPage.module.css';
+import '../App.css';
+
 
 const ChatPage: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
-    const currentUser = Number(localStorage.getItem('currentUser'));
+    const currentUserId = Number(localStorage.getItem('currentUser'));
 
     return (
-        <div className={styles.pageContainer}>
+        <div className="container">
             <Header />
             <div className={styles.chatPage}>
                 <div className={styles.dialogs}>

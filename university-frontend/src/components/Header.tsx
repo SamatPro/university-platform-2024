@@ -30,9 +30,9 @@ const Header: React.FC = () => {
                     <ul>
                         {token && <li><Link to={`/profile/${username}`}>Профиль</Link></li> }
                         <li><Link to="/network">Сеть</Link></li>
-                        <li><Link to="/jobs">Вакансии</Link></li>
                         {token && <li><Link to="/chat">Сообщения</Link></li>}
                         {token && <li><Link to="/notifications">Уведомления</Link></li>}
+                        {token && <li><Link to="/friends">Друзья</Link></li>}
                     </ul>
                 </nav>
             </div>

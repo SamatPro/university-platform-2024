@@ -19,12 +19,14 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public void createNotification(User user, String message) {
+    public void createNotification(User user, String message, Notification.NotificationType type, Long senderId) {
         Notification notification = new Notification();
         notification.setUser(user);
         notification.setMessage(message);
         notification.setCreatedAt(LocalDateTime.now());
         notification.setRead(false);
+        notification.setType(type);
+        notification.setSenderId(senderId);
         notificationRepository.save(notification);
     }
 
@@ -33,6 +35,18 @@ public class NotificationService {
     }
 
     public void markAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow();
+        notification.setRead(true);
+        notificationRepository.save(notification);
+    }
+
+    public void acceptFriendRequest(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow();
+        notification.setRead(true);
+        notificationRepository.save(notification);
+    }
+
+    public void declineFriendRequest(Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId).orElseThrow();
         notification.setRead(true);
         notificationRepository.save(notification);

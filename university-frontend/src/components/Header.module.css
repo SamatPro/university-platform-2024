@@ -1,3 +1,4 @@
+/* src/components/Header.module.css */
 .header {
     display: flex;
     justify-content: space-between;
@@ -13,12 +14,12 @@
     font-weight: bold;
 }
 
-.nav a {
+.navigation a {
     margin-left: 20px;
     color: #fff;
     text-decoration: none;
 }
 
-.nav a:hover {
+.navigation a:hover {
     text-decoration: underline;
 }

@@ -1,3 +1,4 @@
+// src/components/Recommendations.tsx
 import React from 'react';
 import { useGetRecommendationsQuery } from '../services/apiService';
 import { Link } from 'react-router-dom';
@@ -12,21 +13,25 @@ const Recommendations: React.FC<{ userId: number }> = ({ userId }) => {
     return (
         <div className={styles.recommendations}>
             <h2>Recommended Friends</h2>
-            <ul>
-                {recommendations?.map((profile) => (
-                    <li key={profile.id} className={styles.recommendation}>
-                        <Link to={`/profile/${profile.user.username}`}>
+            <div className={styles.recommendationList}>
+                {recommendations?.filter(profile => profile.user.id !== userId).map((profile) => (
+                    <div key={profile.id} className={styles.recommendation}>
+                        <Link to={`/profile/${profile.user.username}`} className={styles.recommendationLink}>
                             <div className={styles.avatar}>
-                                <img src={`http://localhost:8080/api/users/avatar/${profile.user.avatarFilename}`} alt="Avatar" />
+                                {profile.avatarFilename ? (
+                                    <img src={`http://localhost:8080/api/users/avatar/${profile.avatarFilename}`} alt="Avatar" />
+                                ) : (
+                                    <div className={styles.avatarPlaceholder}></div>
+                                )}
                             </div>
                             <div className={styles.info}>
                                 <div>{profile.firstName} {profile.lastName}</div>
                                 <div>{profile.university}</div>
                             </div>
                         </Link>
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

@@ -20,12 +20,19 @@ public class RecommendationsController {
     @Autowired
     private ProfileRepository profileRepository;
 
-
     @GetMapping("/recommendations/{userId}")
     public ResponseEntity<List<Profile>> getRecommendations(@PathVariable int userId) {
-        List<Long> recommendedUserIds = antColonyService.recommendNewContacts(userId, 5);
-        List<Profile> recommendedProfiles = profileRepository.findAllById(recommendedUserIds);
-        return ResponseEntity.ok(recommendedProfiles);
+        try {
+            System.out.println("Received request for recommendations for userId: " + userId);
+            List<Long> recommendedUserIds = antColonyService.recommendNewContacts(userId, 5);
+            System.out.println("Recommended user IDs: " + recommendedUserIds);
+            List<Profile> recommendedProfiles = profileRepository.findAllById(recommendedUserIds);
+            System.out.println("Recommended profiles: " + recommendedProfiles);
+            return ResponseEntity.ok(recommendedProfiles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @PostMapping("/friends/add")
@@ -35,5 +42,4 @@ public class RecommendationsController {
         antColonyService.addFriend(userId1, userId2);
         return ResponseEntity.ok().build();
     }
-
 }

@@ -44,6 +44,8 @@ interface Notification {
     message: string;
     createdAt: string;
     read: boolean;
+    type: string;
+    senderId: number;
 }
 
 export const apiService = createApi({
@@ -105,8 +107,11 @@ export const apiService = createApi({
         getRecommendations: builder.query<Profile[], number>({
             query: (userId) => `recommendations/${userId}`,
         }),
-        getNotifications: builder.query<Notification[], void>({
-            query: () => 'notifications',
+        getNotifications: builder.query<Notification[], number>({
+            query: (userId) => ({
+                url: 'notifications',
+                params: { userId },
+            }),
         }),
         markNotificationAsRead: builder.mutation<void, number>({
             query: (notificationId) => ({
@@ -114,6 +119,24 @@ export const apiService = createApi({
                 method: 'PUT',
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
+        }),
+        acceptFriendRequest: builder.mutation<void, { notificationId: number, senderId: number, receiverId: number }>({
+            query: ({ notificationId, senderId, receiverId }) => ({
+                url: `notifications/${notificationId}/accept`,
+                method: 'POST',
+                params: { senderId, receiverId },
+            }),
+            invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
+        }),
+        declineFriendRequest: builder.mutation<void, number>({
+            query: (notificationId) => ({
+                url: `notifications/${notificationId}/decline`,
+                method: 'POST',
+            }),
+            invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
+        }),
+        getFriendsByUserId: builder.query<User[], number>({
+            query: (userId) => `users/friends/${userId}`,
         }),
     }),
 });
@@ -129,5 +152,8 @@ export const {
     useGetJobsQuery,
     useGetRecommendationsQuery,
     useGetNotificationsQuery,
-    useMarkNotificationAsReadMutation
+    useMarkNotificationAsReadMutation,
+    useAcceptFriendRequestMutation,
+    useDeclineFriendRequestMutation,
+    useGetFriendsByUserIdQuery
 } = apiService;

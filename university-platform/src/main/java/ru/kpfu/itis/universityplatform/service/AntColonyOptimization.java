@@ -47,11 +47,15 @@ public class AntColonyOptimization {
         int current = startUser;
         for (int i = 1; i < numUsers; i++) {
             int next = chooseNext(current, visited);
+            if (next == -1) {
+                break;
+            }
             tour[i] = next;
             visited[next] = true;
             current = next;
         }
 
+        System.out.println("Generated tour for user " + startUser + ": " + Arrays.toString(tour));
         return tour;
     }
 
@@ -77,9 +81,14 @@ public class AntColonyOptimization {
 
         // Normalize probabilities
         for (int i = 0; i < numUsers; i++) {
-            probabilities[i] /= sum;
+            if (sum > 0) {
+                probabilities[i] /= sum;
+            } else {
+                probabilities[i] = 0;
+            }
         }
 
+        System.out.println("Calculated probabilities for user " + current + ": " + Arrays.toString(probabilities));
         return probabilities;
     }
 
@@ -94,17 +103,20 @@ public class AntColonyOptimization {
             }
         }
 
-        return numUsers - 1;
+        return -1;
     }
 
     private void updatePheromones(int[] tour) {
         for (int i = 0; i < tour.length - 1; i++) {
             int from = tour[i];
             int to = tour[i + 1];
-            // Испарение феромонов
-            pheromones[from][to] *= (1 - evaporationRate);
-            // Депозит феромонов
-            pheromones[from][to] += pheromoneDeposit;
+            if (from != -1 && to != -1) {
+                // Испарение феромонов
+                pheromones[from][to] *= (1 - evaporationRate);
+                // Депозит феромонов
+                pheromones[from][to] += pheromoneDeposit;
+                System.out.println("Updated pheromones from " + from + " to " + to + ": " + pheromones[from][to]);
+            }
         }
     }
 }

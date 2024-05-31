@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import styles from './NetworkPage.module.css';
+import '../App.css';
+
 
 const NetworkPage: React.FC = () => {
     const { data: users, error, isLoading } = useGetUsersQuery();
@@ -22,7 +24,7 @@ const NetworkPage: React.FC = () => {
 
             if (response.ok) {
                 // Обновить UI или отобразить сообщение об успехе
-                alert('Friend request sent successfully');
+                //alert('Friend request sent successfully');
             } else {
                 throw new Error('Failed to send friend request');
             }
@@ -36,8 +38,8 @@ const NetworkPage: React.FC = () => {
     if (error) return <div>Error loading users: {error.toString()}</div>;
 
     return (
-        <div>
-            <Header />
+        <div className="container">
+            <Header/>
             <div className={styles.container}>
                 <h1>Сеть</h1>
                 <ul className={styles.userList}>
@@ -65,7 +67,7 @@ const NetworkPage: React.FC = () => {
                     ))}
                 </ul>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

@@ -3,7 +3,10 @@ package ru.kpfu.itis.universityplatform.entity;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Set;
@@ -11,6 +14,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ToString(exclude = {"profile"})
 public class User {
 
     @Id
@@ -26,7 +31,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Profile profile;
 
     @OneToMany(mappedBy = "postedBy")

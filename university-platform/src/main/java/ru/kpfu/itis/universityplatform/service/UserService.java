@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.kpfu.itis.universityplatform.entity.GraphConnection;
 import ru.kpfu.itis.universityplatform.entity.Profile;
 import ru.kpfu.itis.universityplatform.entity.User;
+import ru.kpfu.itis.universityplatform.repository.GraphConnectionRepository;
 import ru.kpfu.itis.universityplatform.repository.UserRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -22,10 +22,26 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GraphConnectionRepository graphConnectionRepository;
+
     private final Path rootLocation = Paths.get("C:/uploads");
 
     public List<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    public List<User> getFriends(Long userId) {
+        List<GraphConnection> connections = graphConnectionRepository.findByUserFromIdOrUserToId(userId, userId);
+        Set<Long> friendIds = new HashSet<>();
+        for (GraphConnection connection : connections) {
+            if (connection.getUserFrom().getId().equals(userId)) {
+                friendIds.add(connection.getUserTo().getId());
+            } else {
+                friendIds.add(connection.getUserFrom().getId());
+            }
+        }
+        return userRepository.findAllById(friendIds);
     }
 
     public Optional<User> findUserById(Long id) {

@@ -1,11 +1,14 @@
 package ru.kpfu.itis.universityplatform.entity;
 
 import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import lombok.ToString;
+
 import java.util.Set;
 
 @Entity
@@ -13,6 +16,7 @@ import java.util.Set;
 @Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ToString(exclude = {"user"})
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

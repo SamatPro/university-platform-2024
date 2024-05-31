@@ -74,4 +74,10 @@ public class UserController {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+
+    @GetMapping("/friends/{userId}")
+    public ResponseEntity<List<User>> getFriends(@PathVariable Long userId) {
+        List<User> friends = userService.getFriends(userId);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
+    }
 }

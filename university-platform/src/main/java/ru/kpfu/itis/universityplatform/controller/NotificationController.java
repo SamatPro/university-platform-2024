@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.universityplatform.entity.Notification;
 import ru.kpfu.itis.universityplatform.service.NotificationService;
+import ru.kpfu.itis.universityplatform.service.AntColonyService;
 
 import java.util.List;
 
@@ -13,10 +14,12 @@ import java.util.List;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final AntColonyService antColonyService;
 
     @Autowired
-    public NotificationController(NotificationService notificationService) {
+    public NotificationController(NotificationService notificationService, AntColonyService antColonyService) {
         this.notificationService = notificationService;
+        this.antColonyService = antColonyService;
     }
 
     @GetMapping
@@ -30,5 +33,16 @@ public class NotificationController {
         notificationService.markAsRead(notificationId);
         return ResponseEntity.ok().build();
     }
-}
 
+    @PostMapping("/{notificationId}/accept")
+    public ResponseEntity<Void> acceptFriendRequest(@PathVariable Long notificationId, @RequestParam Long senderId, @RequestParam Long receiverId) {
+        antColonyService.acceptFriendRequest(notificationId, senderId, receiverId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{notificationId}/decline")
+    public ResponseEntity<Void> declineFriendRequest(@PathVariable Long notificationId) {
+        notificationService.declineFriendRequest(notificationId);
+        return ResponseEntity.ok().build();
+    }
+}
