@@ -132,7 +132,8 @@ public class AntColonyService {
         if (!isConnected(userId1, userId2)) {
             // Создание уведомления
             User user2 = userRepository.findById(userId2).orElseThrow();
-            notificationService.createNotification(user2, "Пользователь " + userId1 + " хочет добавить вас в друзья.", Notification.NotificationType.FRIEND_REQUEST, userId1);
+            User user1 = userRepository.findById(userId1).orElseThrow();
+            notificationService.createNotification(user2, "Пользователь " + user1.getProfile().getFirstName() + " " + user1.getProfile().getLastName() + " хочет добавить вас в друзья.", Notification.NotificationType.FRIEND_REQUEST, userId1);
         }
     }
 

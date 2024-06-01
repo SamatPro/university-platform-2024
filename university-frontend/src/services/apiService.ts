@@ -8,6 +8,9 @@ interface Profile {
     graduationYear: number;
     bio: string;
     skills: string[];
+    workplaces: string[];
+    interests: string[];
+    favoriteSubjects: string[];
     avatarFilename?: string;
     user: {
         id: number;
@@ -138,6 +141,20 @@ export const apiService = createApi({
         getFriendsByUserId: builder.query<User[], number>({
             query: (userId) => `users/friends/${userId}`,
         }),
+        getMentorRecommendations: builder.query<User[], number>({
+            query: (userId) => `mentorship/recommendations/${userId}`,
+        }),
+        getMatchRecommendations: builder.query<User[], number>({
+            query: (userId) => `matchmaking/recommendations/${userId}`,
+        }),
+        addFriend: builder.mutation<void, { userId1: number; userId2: number }>({
+            query: ({ userId1, userId2 }) => ({
+                url: `friendship/add`,
+                method: 'POST',
+                body: { userId1, userId2 },
+            }),
+            invalidatesTags: [{ type: 'Profile', id: 'LIST' }]
+        }),
     }),
 });
 
@@ -155,5 +172,8 @@ export const {
     useMarkNotificationAsReadMutation,
     useAcceptFriendRequestMutation,
     useDeclineFriendRequestMutation,
-    useGetFriendsByUserIdQuery
+    useGetFriendsByUserIdQuery,
+    useGetMentorRecommendationsQuery,
+    useGetMatchRecommendationsQuery,
+    useAddFriendMutation
 } = apiService;

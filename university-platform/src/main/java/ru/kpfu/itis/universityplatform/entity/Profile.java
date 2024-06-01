@@ -16,7 +16,7 @@ import java.util.Set;
 @Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@ToString(exclude = {"user"})
+@ToString(exclude = "user")
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +44,21 @@ public class Profile {
     @CollectionTable(name = "profile_skills", joinColumns = @JoinColumn(name = "profile_id"))
     @Column(name = "skill")
     private Set<String> skills;
+
+    @ElementCollection
+    @CollectionTable(name = "profile_workplaces", joinColumns = @JoinColumn(name = "profile_id"))
+    @Column(name = "workplace")
+    private Set<String> workplaces;
+
+    @ElementCollection
+    @CollectionTable(name = "profile_interests", joinColumns = @JoinColumn(name = "profile_id"))
+    @Column(name = "interest")
+    private Set<String> interests;
+
+    @ElementCollection
+    @CollectionTable(name = "profile_favorite_subjects", joinColumns = @JoinColumn(name = "profile_id"))
+    @Column(name = "favorite_subject")
+    private Set<String> favoriteSubjects;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

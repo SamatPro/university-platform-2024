@@ -19,6 +19,9 @@ const EditProfilePage: React.FC = () => {
         graduationYear: '',
         bio: '',
         skills: '',
+        workplaces: '',
+        interests: '',
+        favoriteSubjects: '',
         avatar: null as File | null,
     });
 
@@ -31,6 +34,9 @@ const EditProfilePage: React.FC = () => {
                 graduationYear: profile.graduationYear?.toString() || '',
                 bio: profile.bio || '',
                 skills: profile.skills.join(', '),
+                workplaces: profile.workplaces.join(', '),
+                interests: profile.interests.join(', '),
+                favoriteSubjects: profile.favoriteSubjects.join(', '),
                 avatar: null,
             });
         }
@@ -67,6 +73,9 @@ const EditProfilePage: React.FC = () => {
                 graduationYear: parseInt(formData.graduationYear, 10),
                 bio: formData.bio,
                 skills: formData.skills.split(',').map(skill => skill.trim()),
+                workplaces: formData.workplaces.split(',').map(workplace => workplace.trim()),
+                interests: formData.interests.split(',').map(interest => interest.trim()),
+                favoriteSubjects: formData.favoriteSubjects.split(',').map(subject => subject.trim()),
             };
             await updateProfile({ id: profile.id, profile: updatedProfile });
 
@@ -144,6 +153,36 @@ const EditProfilePage: React.FC = () => {
                             type="text"
                             name="skills"
                             value={formData.skills}
+                            onChange={handleChange}
+                            className={styles.input}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Workplaces:</label>
+                        <input
+                            type="text"
+                            name="workplaces"
+                            value={formData.workplaces}
+                            onChange={handleChange}
+                            className={styles.input}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Interests:</label>
+                        <input
+                            type="text"
+                            name="interests"
+                            value={formData.interests}
+                            onChange={handleChange}
+                            className={styles.input}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Favorite Subjects:</label>
+                        <input
+                            type="text"
+                            name="favoriteSubjects"
+                            value={formData.favoriteSubjects}
                             onChange={handleChange}
                             className={styles.input}
                         />

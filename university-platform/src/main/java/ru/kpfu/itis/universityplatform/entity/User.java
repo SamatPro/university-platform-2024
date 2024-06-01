@@ -3,8 +3,8 @@ package ru.kpfu.itis.universityplatform.entity;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
 
@@ -34,9 +34,6 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Profile profile;
-
-    @OneToMany(mappedBy = "postedBy")
-    private List<Job> jobs;
 
     @OneToMany(mappedBy = "userFrom")
     @JsonIgnore
