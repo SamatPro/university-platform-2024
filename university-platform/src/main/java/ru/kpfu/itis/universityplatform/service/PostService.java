@@ -3,8 +3,10 @@ package ru.kpfu.itis.universityplatform.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.universityplatform.entity.Post;
+import ru.kpfu.itis.universityplatform.entity.User;
 import ru.kpfu.itis.universityplatform.repository.PostRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,10 @@ public class PostService {
     }
 
     public Post savePost(Post post) {
+        return postRepository.save(post);
+    }
+
+    public Post createPost(Post post) {
         return postRepository.save(post);
     }
 

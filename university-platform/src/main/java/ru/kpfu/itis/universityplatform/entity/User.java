@@ -32,7 +32,7 @@ public class User {
     private UserRole role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "user-profile")
     private Profile profile;
 
     @OneToMany(mappedBy = "userFrom")
@@ -50,4 +50,8 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     @JsonBackReference
     private List<Message> receivedMessages;
+
+    @OneToMany(mappedBy = "author")
+    @JsonManagedReference(value = "post-author")
+    private List<Post> posts;
 }

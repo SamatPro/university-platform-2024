@@ -1,47 +1,114 @@
+/* src/components/NetworkPage.module.css */
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+.content {
+    width: 100%;
+    max-width: 900px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
 }
 
 .userList {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .userItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 15px;
     margin-bottom: 10px;
-    background-color: #f3f2ef;
+    background-color: #f3f3f3;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.userItem:hover {
+    transform: translateY(-2px);
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.avatarPlaceholder {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 15px;
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileLink {
+    color: #0073b1;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.profileLink:hover {
+    text-decoration: underline;
+}
+
+.buttonsContainer {
+    display: flex;
+    gap: 10px;
+}
+
+.messageButton, .addFriendButton {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
 .messageButton {
-    padding: 5px 10px;
     background-color: #0073b1;
     color: #fff;
     text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
 }
 
 .messageButton:hover {
     background-color: #005580;
 }
+
 .addFriendButton {
-    margin-left: 10px;
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+}
+
+.addFriendButton:hover {
+    background-color: #218838;
 }

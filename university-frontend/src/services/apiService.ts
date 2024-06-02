@@ -1,3 +1,4 @@
+// apiService.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface Profile {
@@ -31,7 +32,6 @@ interface Job {
     title: string;
     description: string;
     postedBy: number;
-    // Другие свойства
 }
 
 interface Message {
@@ -51,16 +51,22 @@ interface Notification {
     senderId: number;
 }
 
+interface Post {
+    id: number;
+    content: string;
+    createdAt: string;
+    author: User;
+}
+
 export const apiService = createApi({
     reducerPath: 'apiService',
-    tagTypes: ['Profile', 'User', 'Job', 'Message', 'Notification'],
+    tagTypes: ['Profile', 'User', 'Job', 'Message', 'Notification', 'Post'],
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:8080/api/',
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
-                headers.set('Content-Type', 'application/json'); // Установите заголовок Content-Type
             }
             return headers;
         }
@@ -74,9 +80,6 @@ export const apiService = createApi({
                 url: 'profiles',
                 method: 'POST',
                 body: profile,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
             invalidatesTags: [{ type: 'Profile', id: 'LIST' }]
         }),
@@ -85,9 +88,6 @@ export const apiService = createApi({
                 url: `profiles/${id}`,
                 method: 'PUT',
                 body: profile,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
         }),
         uploadAvatar: builder.mutation<void, { username: string; file: FormData }>({
@@ -112,9 +112,6 @@ export const apiService = createApi({
                 url: 'messages',
                 method: 'POST',
                 body: { senderId, receiverId, content },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
         }),
         getRecommendations: builder.query<Profile[], number>({
@@ -130,9 +127,6 @@ export const apiService = createApi({
             query: (notificationId) => ({
                 url: `notifications/${notificationId}/read`,
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
         }),
@@ -141,9 +135,6 @@ export const apiService = createApi({
                 url: `notifications/${notificationId}/accept`,
                 method: 'POST',
                 params: { senderId, receiverId },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
         }),
@@ -151,9 +142,6 @@ export const apiService = createApi({
             query: (notificationId) => ({
                 url: `notifications/${notificationId}/decline`,
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
         }),
@@ -171,15 +159,22 @@ export const apiService = createApi({
                 url: `friendship/add`,
                 method: 'POST',
                 body: { userId1, userId2 },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             }),
             invalidatesTags: [{ type: 'Profile', id: 'LIST' }]
         }),
+        getPosts: builder.query<Post[], void>({
+            query: () => 'posts',
+        }),
+        createPost: builder.mutation<Post, Partial<Post>>({
+            query: (post) => ({
+                url: 'posts',
+                method: 'POST',
+                body: post,
+            }),
+            invalidatesTags: [{ type: 'Post', id: 'LIST' }]
+        }),
     }),
 });
-
 
 export const {
     useGetMessagesQuery,
@@ -198,5 +193,7 @@ export const {
     useGetFriendsByUserIdQuery,
     useGetMentorRecommendationsQuery,
     useGetMatchRecommendationsQuery,
-    useAddFriendMutation
+    useAddFriendMutation,
+    useGetPostsQuery,
+    useCreatePostMutation,
 } = apiService;

@@ -18,6 +18,12 @@
     font-size: 24px;
     color: white;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logoIcon {
+    margin-right: 8px;
 }
 
 .navigation ul {
@@ -35,6 +41,13 @@
 .navigation ul li a {
     color: white;
     text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navigation ul li a:hover {
+    background-color: #495057;
 }
 
 .logoutButton {

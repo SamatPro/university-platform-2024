@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import styles from './Header.module.css';
 import decodeToken from "../services/decodeToken";
 
@@ -29,11 +29,14 @@ const Header: React.FC = () => {
     return (
         <header className={styles.header}>
             <div className={styles.headerContent}>
-                <Link to="/" className={styles.logo}>Универ</Link>
+                <Link to="/" className={styles.logo}>
+                    <FontAwesomeIcon icon={faUniversity} className={styles.logoIcon} /> Универ
+                </Link>
                 <nav className={styles.navigation}>
                     <ul>
                         {!token && <li><Link to={`/login`}>Вход</Link></li>}
                         {token && <li><Link to={`/profile/${username}`}>Профиль</Link></li>}
+                        {token && <li><Link to="/posts">Публикации</Link></li>}
                         {token && <li><Link to="/network">Сеть</Link></li>}
                         {token && <li><Link to="/chat">Сообщения</Link></li>}
                         {token && <li><Link to="/notifications">Уведомления</Link></li>}

@@ -12,7 +12,8 @@ import NotificationsPage from "./components/NotificationsPage";
 import FriendsPage from './components/FriendsPage';
 import EditProfilePage from "./components/EditProfilePage";
 import MentorRecommendationsPage from "./components/MentorRecommendationsPage";
-import MatchmakingPage from "./components/MatchmakingPage"; // Импорт нового компонента
+import MatchmakingPage from "./components/MatchmakingPage";
+import PostsPage from "./components/PostsPage"; // Импорт нового компонента
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/friends" element={<FriendsPage />} />
                 <Route path="/mentor-recommendations" element={<MentorRecommendationsPage />} />
                 <Route path="/matchmaking" element={<MatchmakingPage />} />
+                <Route path="/posts" element={<PostsPage />} />
                 <Route path="*" element={<Navigate replace to="/login" />} />
             </Routes>
         </Router>
