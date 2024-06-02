@@ -2,23 +2,29 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .chatPage {
     display: flex;
     flex: 1;
+    overflow: hidden;
 }
 
 .dialogs {
-    width: 30%;
+    width: 25%;
     border-right: 1px solid #ddd;
     overflow-y: auto;
+    background-color: #f9f9f9;
+    padding: 10px;
 }
 
 .chat {
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding: 10px;
 }
 
 .placeholder {
@@ -26,6 +32,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
     color: #888;
+    text-align: center;
+    padding: 20px;
 }

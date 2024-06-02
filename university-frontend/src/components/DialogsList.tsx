@@ -18,6 +18,7 @@ const DialogsList: React.FC = () => {
 
     return (
         <div className={styles.container}>
+            <Recommendations userId={currentUserId} />
             <div className={styles.dialogsListContainer}>
                 <h1>Диалоги</h1>
                 <ul className={styles.dialogsList}>
@@ -35,7 +36,6 @@ const DialogsList: React.FC = () => {
                     ))}
                 </ul>
             </div>
-            <Recommendations userId={currentUserId} />
         </div>
     );
 };
