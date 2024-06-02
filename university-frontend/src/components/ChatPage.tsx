@@ -7,13 +7,12 @@ import Footer from './Footer';
 import styles from './ChatPage.module.css';
 import '../App.css';
 
-
 const ChatPage: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
     const currentUserId = Number(localStorage.getItem('currentUser'));
 
     return (
-        <div className="container">
+        <div className={styles.pageContainer}>
             <Header />
             <div className={styles.chatPage}>
                 <div className={styles.dialogs}>

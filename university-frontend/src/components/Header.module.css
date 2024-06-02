@@ -1,25 +1,52 @@
-/* src/components/Header.module.css */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     padding: 10px 20px;
-    background-color: #0073b1;
-    color: #fff;
+    background-color: #343a40;
+    color: white;
+}
+
+.headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .logo {
     font-size: 24px;
-    font-weight: bold;
-}
-
-.navigation a {
-    margin-left: 20px;
-    color: #fff;
+    color: white;
     text-decoration: none;
 }
 
-.navigation a:hover {
-    text-decoration: underline;
+.navigation ul {
+    list-style-type: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation ul li {
+    display: inline;
+}
+
+.navigation ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.logoutButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0;
+}
+
+.logoutIcon {
+    width: 24px;
+    height: 24px;
+    color: white;
 }

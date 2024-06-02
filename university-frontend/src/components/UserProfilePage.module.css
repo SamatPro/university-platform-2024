@@ -1,30 +1,27 @@
 .profilePage {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #f3f2ef;
-    padding: 20px;
+    min-height: 100vh;
 }
 
 .mainContent {
-    max-width: 800px;
-    width: 100%;
+    flex: 1;
+    padding: 20px;
+    background-color: #f3f2ef;
+}
+
+.profileCard {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-top: 20px;
-}
-
-.profileCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .profileHeader {
     display: flex;
-    flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -34,7 +31,7 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 .avatarPlaceholder {
@@ -42,13 +39,16 @@
     height: 150px;
     border-radius: 50%;
     background-color: #ccc;
-    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.profileInfo {
+    flex: 1;
 }
 
 .username {
     color: #666;
-    margin-top: -10px;
-    margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 .editButton {
@@ -66,10 +66,14 @@
 }
 
 .profileDetails {
-    width: 100%;
     text-align: left;
 }
 
 .profileDetails p {
-    margin: 5px 0;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.profileDetails strong {
+    color: #333;
 }

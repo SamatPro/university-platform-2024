@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from './FriendsPage.module.css';
 import Header from './Header';
 import Footer from './Footer';
+import Recommendations from "./Recommendations";
 
 const FriendsPage: React.FC = () => {
 
@@ -18,7 +19,7 @@ const FriendsPage: React.FC = () => {
     return (
         <div className="container">
             <Header />
-            <h1>Friends List</h1>
+            <h1>Друзья</h1>
             <ul className={styles.userList}>
                 {friends?.map(friend => (
                     <li key={friend.id} className={styles.userItem}>
@@ -40,6 +41,7 @@ const FriendsPage: React.FC = () => {
                     </li>
                 ))}
             </ul>
+            <Recommendations userId={currentUserId} />
             <Footer />
         </div>
     );

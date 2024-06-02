@@ -20,6 +20,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin: 20px 0;
+    width: 100%;
 }
 
 .avatar {
@@ -50,16 +51,35 @@
     align-items: center;
 }
 
-button {
-    margin: 10px;
-    padding: 10px 20px;
+.buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.likeButton, .dislikeButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
     background-color: #0073b1;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
     cursor: pointer;
+    font-size: 24px;
 }
 
-button:hover {
+.likeButton:hover {
     background-color: #005580;
+}
+
+.dislikeButton {
+    background-color: #d9534f;
+}
+
+.dislikeButton:hover {
+    background-color: #c9302c;
 }

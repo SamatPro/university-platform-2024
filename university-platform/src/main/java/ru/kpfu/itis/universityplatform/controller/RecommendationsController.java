@@ -24,6 +24,7 @@ public class RecommendationsController {
     public ResponseEntity<List<Profile>> getRecommendations(@PathVariable int userId) {
         try {
             System.out.println("Received request for recommendations for userId: " + userId);
+            antColonyService.initializeAntColony();
             List<Long> recommendedUserIds = antColonyService.recommendNewContacts(userId, 5);
             System.out.println("Recommended user IDs: " + recommendedUserIds);
             List<Profile> recommendedProfiles = profileRepository.findAllById(recommendedUserIds);

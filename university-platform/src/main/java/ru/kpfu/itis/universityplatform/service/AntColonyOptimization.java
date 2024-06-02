@@ -21,7 +21,7 @@ public class AntColonyOptimization {
     private void initializePheromones() {
         for (int i = 0; i < numUsers; i++) {
             for (int j = 0; j < numUsers; j++) {
-                pheromones[i][j] = 0.1; // Начальное значение феромонов
+                pheromones[i][j] = 0.1;
             }
         }
     }
@@ -111,9 +111,9 @@ public class AntColonyOptimization {
             int from = tour[i];
             int to = tour[i + 1];
             if (from != -1 && to != -1) {
-                // Испарение феромонов
+
                 pheromones[from][to] *= (1 - evaporationRate);
-                // Депозит феромонов
+
                 pheromones[from][to] += pheromoneDeposit;
                 System.out.println("Updated pheromones from " + from + " to " + to + ": " + pheromones[from][to]);
             }

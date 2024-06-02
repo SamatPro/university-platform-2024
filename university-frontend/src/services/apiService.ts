@@ -60,6 +60,7 @@ export const apiService = createApi({
             const token = localStorage.getItem('token');
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
+                headers.set('Content-Type', 'application/json'); // Установите заголовок Content-Type
             }
             return headers;
         }
@@ -73,6 +74,9 @@ export const apiService = createApi({
                 url: 'profiles',
                 method: 'POST',
                 body: profile,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
             invalidatesTags: [{ type: 'Profile', id: 'LIST' }]
         }),
@@ -81,6 +85,9 @@ export const apiService = createApi({
                 url: `profiles/${id}`,
                 method: 'PUT',
                 body: profile,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
         }),
         uploadAvatar: builder.mutation<void, { username: string; file: FormData }>({
@@ -105,6 +112,9 @@ export const apiService = createApi({
                 url: 'messages',
                 method: 'POST',
                 body: { senderId, receiverId, content },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
         }),
         getRecommendations: builder.query<Profile[], number>({
@@ -120,6 +130,9 @@ export const apiService = createApi({
             query: (notificationId) => ({
                 url: `notifications/${notificationId}/read`,
                 method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
         }),
@@ -128,6 +141,9 @@ export const apiService = createApi({
                 url: `notifications/${notificationId}/accept`,
                 method: 'POST',
                 params: { senderId, receiverId },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
         }),
@@ -135,6 +151,9 @@ export const apiService = createApi({
             query: (notificationId) => ({
                 url: `notifications/${notificationId}/decline`,
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
             invalidatesTags: [{ type: 'Notification', id: 'LIST' }]
         }),
@@ -152,11 +171,15 @@ export const apiService = createApi({
                 url: `friendship/add`,
                 method: 'POST',
                 body: { userId1, userId2 },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }),
             invalidatesTags: [{ type: 'Profile', id: 'LIST' }]
         }),
     }),
 });
+
 
 export const {
     useGetMessagesQuery,

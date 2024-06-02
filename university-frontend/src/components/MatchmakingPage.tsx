@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useGetMatchRecommendationsQuery } from '../services/apiService';
+import { FaHeart, FaTimes } from 'react-icons/fa';
 import Header from './Header';
 import Footer from './Footer';
 import styles from './MatchmakingPage.module.css';
@@ -10,7 +11,7 @@ const MatchmakingPage: React.FC = () => {
     const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
 
     const handleSwipe = (direction: 'left' | 'right') => {
-        if (direction === 'right') {
+        if (direction === 'left') {
             // Handle "like" action
         } else {
             // Handle "dislike" action
@@ -39,11 +40,17 @@ const MatchmakingPage: React.FC = () => {
                         </div>
                         <div className={styles.info}>
                             <h2>{currentMatch.profile.firstName} {currentMatch.profile.lastName}</h2>
-                            <p>{currentMatch.profile.favoriteSubjects}</p>
-                            <p>{currentMatch.profile.interests}</p>
+                            <p>{currentMatch.profile.favoriteSubjects.join(', ')}</p>
+                            <p>{currentMatch.profile.interests.join(', ')}</p>
                             <p>{currentMatch.profile.university}</p>
-                            <button onClick={() => handleSwipe('right')}>Like</button>
-                            <button onClick={() => handleSwipe('left')}>Dislike</button>
+                            <div className={styles.buttons}>
+                                <button className={styles.dislikeButton} onClick={() => handleSwipe('right')}>
+                                    <FaTimes />
+                                </button>
+                                <button className={styles.likeButton} onClick={() => handleSwipe('left')}>
+                                    <FaHeart />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ) : (

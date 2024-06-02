@@ -5,6 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import styles from './NetworkPage.module.css';
 import '../App.css';
+import Recommendations from "./Recommendations";
 
 
 const NetworkPage: React.FC = () => {
@@ -66,6 +67,8 @@ const NetworkPage: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+                <Recommendations userId={Number(currentUserId)} />
+
             </div>
             <Footer/>
         </div>

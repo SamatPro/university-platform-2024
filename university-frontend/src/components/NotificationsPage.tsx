@@ -8,6 +8,7 @@ import {
 import styles from './NotificationsPage.module.css';
 import Header from "./Header";
 import Footer from "./Footer";
+import Recommendations from "./Recommendations";
 
 
 const NotificationsPage: React.FC = () => {
@@ -70,6 +71,7 @@ const NotificationsPage: React.FC = () => {
                         ))}
                     </ul>
                 </div>
+                <Recommendations userId={userId} />
             </div>
             <Footer/>
         </div>

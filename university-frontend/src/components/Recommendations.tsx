@@ -12,7 +12,7 @@ const Recommendations: React.FC<{ userId: number }> = ({ userId }) => {
 
     return (
         <div className={styles.recommendations}>
-            <h2>Recommended Friends</h2>
+            <h3>Рекомендуем новых друзей</h3>
             <div className={styles.recommendationList}>
                 {recommendations?.filter(profile => profile.user.id !== userId).map((profile) => (
                     <div key={profile.id} className={styles.recommendation}>

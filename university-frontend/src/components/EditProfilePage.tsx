@@ -45,19 +45,18 @@ const EditProfilePage: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
 
-        if (e.target instanceof HTMLInputElement) {
-            const input = e.target as HTMLInputElement;
-            const files = input.files;
-            if (files && files.length > 0) {
-                setFormData((prev) => ({
-                    ...prev,
-                    avatar: files[0],
-                }));
-            }
-        } else {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = e.target;
+        if (files && files.length > 0) {
             setFormData((prev) => ({
                 ...prev,
-                [name]: value,
+                avatar: files[0],
             }));
         }
     };
@@ -77,15 +76,19 @@ const EditProfilePage: React.FC = () => {
                 interests: formData.interests.split(',').map(interest => interest.trim()),
                 favoriteSubjects: formData.favoriteSubjects.split(',').map(subject => subject.trim()),
             };
-            await updateProfile({ id: profile.id, profile: updatedProfile });
 
-            if (formData.avatar) {
-                const formDataAvatar = new FormData();
-                formDataAvatar.append('file', formData.avatar);
-                await uploadAvatar({ username: username!, file: formDataAvatar });
+            try {
+                console.log('Updated Profile:', updatedProfile);
+                await updateProfile({ id: profile.id, profile: updatedProfile }).unwrap();
+                if (formData.avatar) {
+                    const formDataAvatar = new FormData();
+                    formDataAvatar.append('file', formData.avatar);
+                    await uploadAvatar({ username: username!, file: formDataAvatar }).unwrap();
+                }
+                navigate(`/profile/${username}`);
+            } catch (error) {
+                console.error("Failed to update profile:", error);
             }
-
-            navigate(`/profile/${username}`);
         }
     };
 
@@ -96,10 +99,10 @@ const EditProfilePage: React.FC = () => {
         <div className={styles.editProfilePage}>
             <Header />
             <main className={styles.mainContent}>
-                <h1>Edit Profile</h1>
+                <h1>Редактирование профиля</h1>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.formGroup}>
-                        <label>First Name:</label>
+                        <label>Имя:</label>
                         <input
                             type="text"
                             name="firstName"
@@ -109,7 +112,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Last Name:</label>
+                        <label>Фамилия:</label>
                         <input
                             type="text"
                             name="lastName"
@@ -119,7 +122,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>University:</label>
+                        <label>Университет:</label>
                         <input
                             type="text"
                             name="university"
@@ -129,7 +132,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Graduation Year:</label>
+                        <label>Год выпуска:</label>
                         <input
                             type="text"
                             name="graduationYear"
@@ -139,7 +142,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Bio:</label>
+                        <label>О себе:</label>
                         <textarea
                             name="bio"
                             value={formData.bio}
@@ -148,7 +151,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Skills:</label>
+                        <label>Навыки:</label>
                         <input
                             type="text"
                             name="skills"
@@ -158,7 +161,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Workplaces:</label>
+                        <label>Места работы:</label>
                         <input
                             type="text"
                             name="workplaces"
@@ -168,7 +171,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Interests:</label>
+                        <label>Интересы:</label>
                         <input
                             type="text"
                             name="interests"
@@ -178,7 +181,7 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Favorite Subjects:</label>
+                        <label>Любимые предметы:</label>
                         <input
                             type="text"
                             name="favoriteSubjects"
@@ -188,16 +191,16 @@ const EditProfilePage: React.FC = () => {
                         />
                     </div>
                     <div className={styles.formGroup}>
-                        <label>Avatar:</label>
+                        <label>Аватар:</label>
                         <input
                             type="file"
                             name="avatar"
-                            onChange={handleChange}
+                            onChange={handleFileChange}
                             className={styles.input}
                         />
                     </div>
                     <button type="submit" disabled={isUpdating || isUploading} className={styles.button}>
-                        Save Changes
+                        Сохранить
                     </button>
                 </form>
             </main>

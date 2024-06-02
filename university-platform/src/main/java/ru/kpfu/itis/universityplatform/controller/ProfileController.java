@@ -1,6 +1,7 @@
 package ru.kpfu.itis.universityplatform.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.universityplatform.entity.Profile;
@@ -31,8 +32,8 @@ public class ProfileController {
         return profileRepository.save(profile);
     }
 
-    @PutMapping("/{id}")
-    public Profile updateProfile(@PathVariable Long id, @RequestBody Profile profileDetails) {
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Profile> updateProfile(@PathVariable Long id, @RequestBody Profile profileDetails) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Profile not found for this id :: " + id));
 
@@ -46,6 +47,7 @@ public class ProfileController {
         profile.setInterests(profileDetails.getInterests());
         profile.setFavoriteSubjects(profileDetails.getFavoriteSubjects());
 
-        return profileRepository.save(profile);
+        Profile updatedProfile = profileRepository.save(profile);
+        return ResponseEntity.ok(updatedProfile);
     }
 }
