@@ -18,12 +18,12 @@ public class JwtTokenProvider {
     public String generateToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION); // Лучше определить JWT_EXPIRATION как static final long
+        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
 
         return Jwts.builder()
-                .setSubject(userPrincipal.getEmail()) // Идентификатор пользователя
-                .claim("userId", userPrincipal.getId())   // Добавляем userId как дополнительный claim
-                .claim("username", userPrincipal.getUsername())   // Добавляем userId как дополнительный claim
+                .setSubject(userPrincipal.getEmail())
+                .claim("userId", userPrincipal.getId())
+                .claim("username", userPrincipal.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)

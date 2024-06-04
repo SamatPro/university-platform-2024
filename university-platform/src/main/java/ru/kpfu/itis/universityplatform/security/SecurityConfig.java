@@ -29,17 +29,17 @@ public class SecurityConfig {
         http
                 .cors().configurationSource(corsConfigurationSource)
                 .and()
-                .csrf().disable() // Отключаем CSRF защиту
+                .csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/ws/**").permitAll() // Путь для аутентификации открыт для всех
-                .antMatchers("/api/sync-users/**").hasRole("ADMIN") // Только ADMIN может синхронизировать пользователей
+                .antMatchers("/api/auth/**", "/ws/**").permitAll()
+                .antMatchers("/api/sync-users/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // JWT фильтр перед базовой аутентификацией
-                .httpBasic(); // Основная HTTP аутентификация
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic();
 
         return http.build();
     }

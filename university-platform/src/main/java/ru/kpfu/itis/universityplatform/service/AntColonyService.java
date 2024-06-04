@@ -84,7 +84,7 @@ public class AntColonyService {
     public List<Long> recommendNewContacts(int userId, int numRecommendations) {
         if (!userIdToIndex.containsKey((long) userId)) {
             System.err.println("Invalid userId: " + userId);
-            return new ArrayList<>();  // Возвращаем пустой список, если userId невалидный
+            return new ArrayList<>();
         }
 
         System.out.println("Starting recommendation for userId: " + userId);
@@ -130,7 +130,6 @@ public class AntColonyService {
     @Transactional
     public void addFriend(long userId1, long userId2) {
         if (!isConnected(userId1, userId2)) {
-            // Создание уведомления
             User user2 = userRepository.findById(userId2).orElseThrow();
             User user1 = userRepository.findById(userId1).orElseThrow();
             notificationService.createNotification(user2, "Пользователь " + user1.getProfile().getFirstName() + " " + user1.getProfile().getLastName() + " хочет добавить вас в друзья.", Notification.NotificationType.FRIEND_REQUEST, userId1);
@@ -154,7 +153,6 @@ public class AntColonyService {
             connection2.setPheromoneLevel(0.1);
             graphConnectionRepository.save(connection2);
 
-            // Обновление уведомления как прочитанного и обработанного
             Notification notification = notificationRepository.findById(notificationId).orElseThrow();
             notification.setRead(true);
             notificationRepository.save(notification);
